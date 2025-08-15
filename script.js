@@ -8,7 +8,9 @@ function calculateTradeValue(baseValue, gainValue, rarityMultiplier, rarity) {
         'Rare': 1.6,
         'Épique': 2.0,
         'Légendaire': 2.5,
-        'Mythique': 3.0
+        'Mythique': 3.0,
+        'Secret': 3.5,
+        'Inconnu': 5.0
     };
     
     const rarityValue = rarityBonus[rarity] || 1.0;
@@ -243,9 +245,9 @@ const noobsData = {
         image: 'static/images/noob-creators.png',
         price: '108,000,000$',
         gainPerSecond: '540,000$/s',
-        rarity: 'Secret',
+        rarity: 'Inconnu',
         description: 'Les créateurs originels du monde des Noobs, maîtres suprêmes de la création',
-        rarityMultiplier: 3.0,
+        rarityMultiplier: 5.0,
         gainValue: 540000,
         baseValue: 108000000,
         category: 'noobs',
@@ -254,15 +256,25 @@ const noobsData = {
 };
 
 const mutationsData = {
-    'golden-mutation': {
-        name: 'Golden Mutation',
+    'default-mutation': {
+        name: 'Default Mutation',
         image: 'static/images/golden-mutation.png',
         multiplier: 'x1.0',
         gainPerSecond: 'Multiplie tous les gains par 1.0',
+        eventInfo: 'Mutation de base',
+        description: 'Mutation de départ standard',
+        category: 'mutations',
+        rarityMultiplier: 1.0
+    },
+    'golden-mutation': {
+        name: 'Golden Mutation',
+        image: 'static/images/golden-mutation.png',
+        multiplier: 'x1.2',
+        gainPerSecond: 'Multiplie tous les gains par 1.2',
         eventInfo: 'Événement spécial',
         description: 'Transformation dorée légendaire',
         category: 'mutations',
-        rarityMultiplier: 1.0
+        rarityMultiplier: 1.2
     },
     'rainbow-mutation': {
         name: 'Rainbow Mutation',
@@ -283,16 +295,6 @@ const mutationsData = {
         description: 'Énergie spirituelle cosmique',
         category: 'mutations',
         rarityMultiplier: 1.3
-    },
-    'neon-mutation': {
-        name: 'Neon Mutation',
-        image: 'static/images/neon-mutation.png',
-        multiplier: 'x1.0',
-        gainPerSecond: 'Multiplie tous les gains par 1.0',
-        eventInfo: 'Événement neon',
-        description: 'Lueur électrique futuriste',
-        category: 'mutations',
-        rarityMultiplier: 1.0
     }
 };
 
@@ -1049,77 +1051,120 @@ function openNoobSelector(targetSlot, side) {
         }
     }
     
-    // Bouton de fermeture
+    // Bouton de fermeture avec gestion améliorée
     const closeBtn = selectorModal.querySelector('.selector-close');
-    closeBtn.addEventListener("click", closeSelectorModal);
-    closeBtn.addEventListener("touchend", (e) => {
-        e.preventDefault();
-        closeSelectorModal();
+    let closeBtnTouchHandled = false;
+    
+    closeBtn.addEventListener("touchstart", (e) => {
+        e.stopPropagation();
+        closeBtnTouchHandled = true;
+        closeBtn.style.background = "rgba(229, 62, 62, 1)";
+        closeBtn.style.transform = "scale(0.9)";
     });
     
-    // Gérer la sélection avec support tactile amélioré
+    closeBtn.addEventListener("touchend", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (closeBtnTouchHandled) {
+            closeBtn.style.background = "rgba(229, 62, 62, 0.8)";
+            closeBtn.style.transform = "scale(1)";
+            closeSelectorModal();
+            setTimeout(() => { closeBtnTouchHandled = false; }, 300);
+        }
+    });
+    
+    closeBtn.addEventListener("touchcancel", (e) => {
+        closeBtnTouchHandled = false;
+        closeBtn.style.background = "rgba(229, 62, 62, 0.8)";
+        closeBtn.style.transform = "scale(1)";
+    });
+    
+    closeBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!closeBtnTouchHandled) {
+            closeSelectorModal();
+        }
+    });
+    
+    // Variable globale pour gérer les événements tactiles
+    let isProcessingSelection = false;
+    
+    // Fermeture modal en cliquant à l'extérieur
     selectorModal.addEventListener("click", (e) => {
         if (e.target.classList.contains("noob-selector-modal")) {
             closeSelectorModal();
         }
-        
-        const item = e.target.closest(".noob-selector-item");
-        if (item) {
-            const noobId = item.dataset.noobId;
-            const noob = noobsData[noobId];
-            addNoobToSide(side, noobId, noob);
-            closeSelectorModal();
-            updateTradeCalculations();
-        }
     });
 
-    // Support tactile pour mobile
+    // Support tactile pour mobile - fermeture
     selectorModal.addEventListener("touchstart", (e) => {
         if (e.target.classList.contains("noob-selector-modal")) {
             closeSelectorModal();
         }
     });
 
+    // Fonction unique pour sélectionner un noob
+    function selectNoob(noobId) {
+        if (isProcessingSelection) return;
+        isProcessingSelection = true;
+        
+        const noob = noobsData[noobId];
+        addNoobToSide(side, noobId, noob);
+        closeSelectorModal();
+        updateTradeCalculations();
+        
+        // Réinitialiser après un délai pour éviter les doubles clics
+        setTimeout(() => {
+            isProcessingSelection = false;
+        }, 500);
+    }
+
     // Améliorer la réactivité tactile des éléments
     const selectorItems = selectorModal.querySelectorAll(".noob-selector-item");
     selectorItems.forEach(item => {
         let touchStarted = false;
+        let touchHandled = false;
         
         item.addEventListener("touchstart", (e) => {
             touchStarted = true;
+            touchHandled = false;
             item.style.background = "rgba(74, 158, 255, 0.3)";
             item.style.transform = "scale(0.95)";
         });
         
         item.addEventListener("touchend", (e) => {
-            if (touchStarted) {
+            if (touchStarted && !touchHandled) {
                 e.preventDefault();
+                touchHandled = true;
+                
                 item.style.background = "rgba(74, 158, 255, 0.1)";
                 item.style.transform = "scale(1)";
                 
                 const noobId = item.dataset.noobId;
-                const noob = noobsData[noobId];
-                addNoobToSide(side, noobId, noob);
-                closeSelectorModal();
-                updateTradeCalculations();
+                selectNoob(noobId);
+                
+                // Empêcher le click qui suit
+                setTimeout(() => { 
+                    touchStarted = false;
+                    touchHandled = false;
+                }, 300);
             }
-            touchStarted = false;
         });
         
         item.addEventListener("touchcancel", () => {
             touchStarted = false;
+            touchHandled = false;
             item.style.background = "rgba(74, 158, 255, 0.1)";
             item.style.transform = "scale(1)";
         });
         
-        // Support click classique
+        // Support click pour desktop uniquement
         item.addEventListener("click", (e) => {
-            if (!touchStarted) {
+            if (!touchStarted && !touchHandled) {
+                e.preventDefault();
                 const noobId = item.dataset.noobId;
-                const noob = noobsData[noobId];
-                addNoobToSide(side, noobId, noob);
-                closeSelectorModal();
-                updateTradeCalculations();
+                selectNoob(noobId);
             }
         });
     });
