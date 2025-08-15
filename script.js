@@ -1017,7 +1017,7 @@ function openNoobSelector(targetSlot, side) {
         <div class="noob-selector-content">
             <div style="position: sticky; top: 0; background: rgba(30, 35, 45, 0.95); backdrop-filter: blur(20px); z-index: 10; padding: 1rem; border-bottom: 1px solid rgba(74, 158, 255, 0.2); margin: -2rem -2rem 1rem -2rem; border-radius: 20px 20px 0 0;">
                 <h3 style="margin: 0; text-align: center;">Sélectionner un Noob</h3>
-                <button class="selector-close" style="position: absolute; top: 1rem; right: 1rem; background: rgba(229, 62, 62, 0.8); border: none; color: white; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">&times;</button>
+                <button class="selector-close" style="position: absolute; top: 1rem; right: 1rem; background: rgba(229, 62, 62, 0.9); border: 2px solid rgba(255,255,255,0.3); color: white; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: bold; z-index: 9999; touch-action: manipulation;">&times;</button>
             </div>
             <div class="noob-selector-grid">
                 ${Object.keys(noobsData).map(noobId => {
@@ -1043,49 +1043,55 @@ function openNoobSelector(targetSlot, side) {
     selectorContent.scrollTop = 0;
     selectorContent.focus();
     
-    // Fonction de fermeture
+    // Fonction de fermeture ultra-robuste
     function closeSelectorModal() {
-        if (document.body.contains(selectorModal)) {
-            document.body.removeChild(selectorModal);
+        try {
+            // Supprimer immédiatement du DOM
+            if (selectorModal && selectorModal.parentNode) {
+                selectorModal.parentNode.removeChild(selectorModal);
+            }
+            // Restaurer le scroll
+            document.body.style.overflow = "auto";
+            
+            // Nettoyer tous les modals de sélecteur qui pourraient rester
+            const allSelectorModals = document.querySelectorAll('.noob-selector-modal');
+            allSelectorModals.forEach(modal => {
+                if (modal.parentNode) {
+                    modal.parentNode.removeChild(modal);
+                }
+            });
+        } catch (error) {
+            console.log("Erreur lors de la fermeture:", error);
             document.body.style.overflow = "auto";
         }
     }
     
-    // Bouton de fermeture avec gestion améliorée
+    // Bouton de fermeture simplifié et robuste
     const closeBtn = selectorModal.querySelector('.selector-close');
-    let closeBtnTouchHandled = false;
     
-    closeBtn.addEventListener("touchstart", (e) => {
-        e.stopPropagation();
-        closeBtnTouchHandled = true;
-        closeBtn.style.background = "rgba(229, 62, 62, 1)";
-        closeBtn.style.transform = "scale(0.9)";
-    });
-    
-    closeBtn.addEventListener("touchend", (e) => {
+    // Fonction de fermeture directe
+    function handleClose(e) {
         e.preventDefault();
         e.stopPropagation();
-        if (closeBtnTouchHandled) {
-            closeBtn.style.background = "rgba(229, 62, 62, 0.8)";
-            closeBtn.style.transform = "scale(1)";
-            closeSelectorModal();
-            setTimeout(() => { closeBtnTouchHandled = false; }, 300);
-        }
-    });
+        e.stopImmediatePropagation();
+        closeSelectorModal();
+    }
     
-    closeBtn.addEventListener("touchcancel", (e) => {
-        closeBtnTouchHandled = false;
-        closeBtn.style.background = "rgba(229, 62, 62, 0.8)";
-        closeBtn.style.transform = "scale(1)";
-    });
+    // Événements simplifiés avec capture
+    closeBtn.addEventListener("click", handleClose, true);
+    closeBtn.addEventListener("touchstart", handleClose, true);
+    closeBtn.addEventListener("mousedown", handleClose, true);
     
-    closeBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (!closeBtnTouchHandled) {
-            closeSelectorModal();
+    // Alternative : gestionnaire sur le header entier pour la zone de fermeture
+    const header = selectorModal.querySelector('div[style*="position: sticky"]');
+    header.addEventListener("click", (e) => {
+        // Si on clique dans la zone du bouton (côté droit)
+        const rect = header.getBoundingClientRect();
+        const clickX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+        if (clickX > rect.right - 80) { // Zone de 80px à droite
+            handleClose(e);
         }
-    });
+    }, true);
     
     // Variable globale pour gérer les événements tactiles
     let isProcessingSelection = false;
@@ -1110,14 +1116,20 @@ function openNoobSelector(targetSlot, side) {
         isProcessingSelection = true;
         
         const noob = noobsData[noobId];
-        addNoobToSide(side, noobId, noob);
-        closeSelectorModal();
-        updateTradeCalculations();
         
-        // Réinitialiser après un délai pour éviter les doubles clics
+        // Fermer immédiatement la modal
+        closeSelectorModal();
+        
+        // Ajouter le noob après un court délai
         setTimeout(() => {
-            isProcessingSelection = false;
-        }, 500);
+            addNoobToSide(side, noobId, noob);
+            updateTradeCalculations();
+            
+            // Réinitialiser après un délai pour éviter les doubles clics
+            setTimeout(() => {
+                isProcessingSelection = false;
+            }, 200);
+        }, 50);
     }
 
     // Améliorer la réactivité tactile des éléments
@@ -1136,6 +1148,7 @@ function openNoobSelector(targetSlot, side) {
         item.addEventListener("touchend", (e) => {
             if (touchStarted && !touchHandled) {
                 e.preventDefault();
+                e.stopPropagation();
                 touchHandled = true;
                 
                 item.style.background = "rgba(74, 158, 255, 0.1)";
@@ -1163,6 +1176,7 @@ function openNoobSelector(targetSlot, side) {
         item.addEventListener("click", (e) => {
             if (!touchStarted && !touchHandled) {
                 e.preventDefault();
+                e.stopPropagation();
                 const noobId = item.dataset.noobId;
                 selectNoob(noobId);
             }
@@ -1228,10 +1242,10 @@ function updateTradeCalculations() {
         themTotal.value += noob.tradeValue;
     });
     
-    // Mettre à jour l'affichage
-    document.getElementById("you-price").textContent = youTotal.price.toLocaleString();
+    // Mettre à jour l'affichage avec formatage approprié
+    document.getElementById("you-price").textContent = `$${youTotal.price.toLocaleString()}`;
     document.getElementById("you-value").textContent = youTotal.value.toLocaleString();
-    document.getElementById("them-price").textContent = themTotal.price.toLocaleString();
+    document.getElementById("them-price").textContent = `$${themTotal.price.toLocaleString()}`;
     document.getElementById("them-value").textContent = themTotal.value.toLocaleString();
     
     // Calculer le verdict
