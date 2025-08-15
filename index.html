@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Value Noob - Steal a Noob Characters</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <h1>Value Noob</h1>
+        </div>
+        <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav class="nav-menu" id="nav-menu">
+            <a href="#" class="nav-link">VALUES</a>
+            <a href="#" class="nav-link" id="calculator-link">CALCULATOR</a>
+            <a href="#" class="nav-link" id="information-link">INFORMATION</a>
+            <a href="#" class="nav-link" id="maintenance-link">MAINTENANCE</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="category-selector">
+            <button class="category-btn active" data-category="noobs">Noobs</button>
+            <button class="category-btn" data-category="mutations">Mutations</button>
+        </div>
+        
+        <div class="search-bar">
+            <input type="text" placeholder="Chercher un noob..." class="search-input">
+        </div>
+        
+        <div class="noobs-grid">
+            <div class="noob-card" data-noob-id="hacker-noob">
+                <div class="card-header">
+                    <span class="rarity">Légendaire</span>
+                    <span class="name">Hacker Noob</span>
+                    <span class="status stable">● Stable</span>
+                </div>
+                <div class="card-image">
+                    <img src="static/images/hacker.noob.png" alt="Hacker Noob">
+                </div>
+                <div class="card-stats">
+                    <div class="stat-row">
+                        <span class="label">Value</span>
+                        <span class="label">Demand</span>
+                    </div>
+                    <div class="stat-row values">
+                        <span class="value">20,000$</span>
+                        <span class="demand">1/10</span>
+                    </div>
+                </div>
+                <div class="physical-value">
+                    Physical Value
+                </div>
+            </div>
+        </div>
+        
+        <div class="mutations-grid" style="display: none;">
+            <div class="noob-card mutation-card" data-noob-id="shadow-mutation">
+                <div class="card-header">
+                    <span class="rarity">Mutation</span>
+                    <span class="name">Shadow Mutation</span>
+                    <span class="status stable">● Stable</span>
+                </div>
+                <div class="card-image">
+                    <img src="https://api.dicebear.com/7.x/pixel-art/svg?seed=shadow&backgroundColor=000000&accessories=mask&accessoriesProbability=100" alt="Shadow Mutation">
+                </div>
+                <div class="card-stats">
+                    <div class="stat-row">
+                        <span class="label">Multiplicateur</span>
+                        <span class="label">Demand</span>
+                    </div>
+                    <div class="stat-row values">
+                        <span class="value">x2.5</span>
+                        <span class="demand">8/10</span>
+                    </div>
+                </div>
+                <div class="physical-value">
+                    Mutation Value
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Made by Prostone • Pour tous les fans de Steal a Noob</p>
+    </footer>
+
+    <div id="noob-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img id="modal-noob-image" src="" alt="">
+                </div>
+                <div class="modal-details">
+                    <h2 id="modal-noob-name"></h2>
+                    <div class="stat-item">
+                        <span class="stat-label">Rareté:</span>
+                        <span id="modal-rarity-value" class="stat-value"></span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Prix:</span>
+                        <span id="modal-price-value" class="stat-value"></span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Gain par seconde:</span>
+                        <span id="modal-gain-value" class="stat-value"></span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Description:</span>
+                        <span id="modal-description-value" class="stat-value description"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="information-modal" class="modal">
+        <div class="information-modal-content">
+            <span class="close information-close">&times;</span>
+            <div class="information-header">
+                <h2>Informations</h2>
+            </div>
+            
+            <div class="information-sections">
+                <div class="information-section">
+                    <h3>À propos du projet</h3>
+                    <div class="info-content">
+                        <p>Ce site web a été créé pour fournir des informations détaillées sur les valeurs des noobs et mutations du jeu <strong>Steal a Noob</strong>.</p>
+                        <p>Il permet aux joueurs de consulter facilement les statistiques, raretés et descriptions de tous les personnages disponibles dans le jeu.</p>
+                    </div>
+                </div>
+                
+                <div class="information-section">
+                    <h3>Crédits</h3>
+                    <div class="credits-grid">
+                        <div class="credit-card">
+                            <div class="credit-icon"></div>
+                            <div class="credit-info">
+                                <h4>Développement du site</h4>
+                                <p class="credit-name">Prostone</p>
+                                <p class="credit-description">Conception, développement et maintenance du site web Value Noob</p>
+                            </div>
+                        </div>
+                        
+                        <div class="credit-card">
+                            <div class="credit-icon"></div>
+                            <div class="credit-info">
+                                <h4>Créateur du jeu</h4>
+                                <p class="credit-name">DarSya's Creations</p>
+                                <p class="credit-description">Développeur du jeu "Steal a Noob" sur Roblox</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="information-section">
+                    <h3>Contact & Support</h3>
+                    <div class="contact-info">
+                        <p>Pour toute question concernant le site web, contactez <strong>Prostone</strong>.</p>
+                        <p>Pour le support du jeu "Steal a Noob", rendez-vous sur la page Roblox de <strong>DarSya's Creations</strong>.</p>
+                    </div>
+                </div>
+                
+                <div class="information-section">
+                    <h3>Avertissement</h3>
+                    <div class="disclaimer">
+                        <p>Ce site n'est pas officiellement affilié à DarSya's Creations ou Roblox. Il s'agit d'un projet communautaire indépendant créé pour aider les joueurs.</p>
+                        <p>Les valeurs et informations présentées peuvent changer selon les mises à jour du jeu.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="maintenance-modal" class="modal">
+        <div class="maintenance-modal-content">
+            <span class="close maintenance-close">&times;</span>
+            <div class="maintenance-header">
+                <h2>Maintenance & Statut</h2>
+                <div class="last-update">Dernière mise à jour: <span id="last-update-time">maintenant</span></div>
+            </div>
+            
+            <div class="maintenance-sections">
+                <div class="maintenance-section">
+                    <h3>🛠️ Statut du Système</h3>
+                    <div class="status-grid">
+                        <div class="status-card operational" id="game-status">
+                            <div class="status-header">
+                                <h4>🎮 Jeu Principal "Steal a Noob"</h4>
+                                <div class="status-badge operational">
+                                    <span class="status-dot"></span>
+                                    <span class="status-text">Opérationnel</span>
+                                </div>
+                            </div>
+                            <div class="status-details">
+                                <p class="status-description">Le jeu fonctionne normalement</p>
+                                <div class="status-metrics">
+                                    <div class="metric">
+                                        <span class="metric-label">Temps de réponse:</span>
+                                        <span class="metric-value good">~45ms</span>
+                                    </div>
+                                    <div class="metric">
+                                        <span class="metric-label">Joueurs en ligne:</span>
+                                        <span class="metric-value">1,247</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="status-card operational" id="site-status">
+                            <div class="status-header">
+                                <h4>💻 Site Web Value Noob</h4>
+                                <div class="status-badge operational">
+                                    <span class="status-dot"></span>
+                                    <span class="status-text">En ligne</span>
+                                </div>
+                            </div>
+                            <div class="status-details">
+                                <p class="status-description">Tous les services web fonctionnent parfaitement</p>
+                                <div class="status-metrics">
+                                    <div class="metric">
+                                        <span class="metric-label">Disponibilité:</span>
+                                        <span class="metric-value good">99.9%</span>
+                                    </div>
+                                    <div class="metric">
+                                        <span class="metric-label">Chargement:</span>
+                                        <span class="metric-value good">~1.2s</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="status-card warning" id="trading-status">
+                            <div class="status-header">
+                                <h4>💱 Système d'Échange</h4>
+                                <div class="status-badge warning">
+                                    <span class="status-dot"></span>
+                                    <span class="status-text">Surveillance</span>
+                                </div>
+                            </div>
+                            <div class="status-details">
+                                <p class="status-description">Monitoring renforcé pour détecter les arnaques</p>
+                                <div class="status-metrics">
+                                    <div class="metric">
+                                        <span class="metric-label">Échanges/jour:</span>
+                                        <span class="metric-value">~2,850</span>
+                                    </div>
+                                    <div class="metric">
+                                        <span class="metric-label">Taux d'arnaque:</span>
+                                        <span class="metric-value warning">12%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="status-card operational" id="data-status">
+                            <div class="status-header">
+                                <h4>📊 Base de Données</h4>
+                                <div class="status-badge operational">
+                                    <span class="status-dot"></span>
+                                    <span class="status-text">Stable</span>
+                                </div>
+                            </div>
+                            <div class="status-details">
+                                <p class="status-description">Données des personnages à jour</p>
+                                <div class="status-metrics">
+                                    <div class="metric">
+                                        <span class="metric-label">Dernière MAJ:</span>
+                                        <span class="metric-value">Il y a 2h</span>
+                                    </div>
+                                    <div class="metric">
+                                        <span class="metric-label">Noobs indexés:</span>
+                                        <span class="metric-value">13</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="maintenance-section">
+                    <h3>📋 Historique des Mises à Jour</h3>
+                    <div class="changelog">
+                        <div class="changelog-item recent">
+                            <div class="changelog-header">
+                                <div class="changelog-date">15 Août 2025</div>
+                                <div class="changelog-type new">Nouvelle fonctionnalité</div>
+                            </div>
+                            <div class="changelog-title">Calculateur d'Échange Avancé</div>
+                            <div class="changelog-desc">
+                                <p>Ajout d'un système sophistiqué de calcul de valeur avec détection d'arnaque en 5 niveaux.</p>
+                                <ul>
+                                    <li>Interface "You vs Them" avec 4 slots par côté</li>
+                                    <li>Calcul basé sur prix, gain/heure et multiplicateurs de rareté</li>
+                                    <li>Détection précise des arnaques avec seuils personnalisés</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="changelog-item">
+                            <div class="changelog-header">
+                                <div class="changelog-date">14 Août 2025</div>
+                                <div class="changelog-type improvement">Amélioration</div>
+                            </div>
+                            <div class="changelog-title">Design Glassmorphism</div>
+                            <div class="changelog-desc">
+                                <p>Refonte complète de l'interface avec effets visuels modernes.</p>
+                                <ul>
+                                    <li>Effets de transparence et blur avancés</li>
+                                    <li>Animations fluides et transitions cubiq-bezier</li>
+                                    <li>Popups modales redesignées avec animations</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="changelog-item">
+                            <div class="changelog-header">
+                                <div class="changelog-date">13 Août 2025</div>
+                                <div class="changelog-type fix">Correction</div>
+                            </div>
+                            <div class="changelog-title">Optimisation Performance</div>
+                            <div class="changelog-desc">
+                                <p>Correction des problèmes de chargement et optimisation du code.</p>
+                                <ul>
+                                    <li>Temps de chargement réduit de 40%</li>
+                                    <li>Optimisation des images et sprites</li>
+                                    <li>Correction des bugs d'affichage mobile</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="maintenance-section">
+                    <h3>🔮 Prochaines Fonctionnalités</h3>
+                    <div class="roadmap">
+                        <div class="roadmap-item planned">
+                            <div class="roadmap-header">
+                                <h4>🔍 Recherche Avancée</h4>
+                                <div class="roadmap-status planned">Planifié</div>
+                            </div>
+                            <div class="roadmap-desc">
+                                <p>Filtres par rareté, prix et gain par seconde avec sauvegarde des préférences.</p>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-item development">
+                            <div class="roadmap-header">
+                                <h4>📈 Graphiques de Tendances</h4>
+                                <div class="roadmap-status development">En développement</div>
+                            </div>
+                            <div class="roadmap-desc">
+                                <p>Visualisation de l'évolution des prix et de la demande des personnages.</p>
+                            </div>
+                        </div>
+
+                        <div class="roadmap-item planned">
+                            <div class="roadmap-header">
+                                <h4>🎵 Effets Sonores</h4>
+                                <div class="roadmap-status planned">Planifié</div>
+                            </div>
+                            <div class="roadmap-desc">
+                                <p>Sons d'interaction, musique d'ambiance et notifications audio.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calculator Modal -->
+    <div id="calculator-modal" class="modal">
+        <div class="modal-content calculator-modal-content">
+            <span class="calculator-close">&times;</span>
+            <h2>Calculateur d'Échange</h2>
+            <div class="calculator-container">
+                <div class="trade-side">
+                    <h3>You</h3>
+                    <div class="trade-slots" id="you-slots">
+                        <div class="trade-slot add-slot" data-side="you">
+                            <span class="plus-icon">+</span>
+                        </div>
+                    </div>
+                    <div class="trade-stats">
+                        <div class="stat-item">
+                            <span class="label">PRICE:</span>
+                            <span class="value" id="you-price">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="label">VALUE:</span>
+                            <span class="value" id="you-value">0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="vs-divider">VS</div>
+                
+                <div class="trade-side">
+                    <h3>Them</h3>
+                    <div class="trade-slots" id="them-slots">
+                        <div class="trade-slot add-slot" data-side="them">
+                            <span class="plus-icon">+</span>
+                        </div>
+                    </div>
+                    <div class="trade-stats">
+                        <div class="stat-item">
+                            <span class="label">PRICE:</span>
+                            <span class="value" id="them-price">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="label">VALUE:</span>
+                            <span class="value" id="them-value">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="trade-result">
+                <div id="trade-verdict" class="verdict neutral">Échange équilibré</div>
+                <div id="trade-difference" class="difference">0% de différence</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup de maintenance -->
+    <div class="maintenance-popup" id="maintenancePopup">
+        <div class="popup-overlay" onclick="closeMaintenancePopup()"></div>
+        <div class="popup-content">
+            <div class="popup-header">
+                <h2>🔧 État de la maintenance</h2>
+                <button class="close-btn" onclick="closeMaintenancePopup()">×</button>
+            </div>
+            <div class="popup-body">
+                <div class="maintenance-status">
+                    <div class="status-indicator">
+                        <div class="status-dot active"></div>
+                        <span class="status-text">Correction des bugs de duplication en cours...</span>
+                    </div>
+                </div>
+                
+                <div class="maintenance-info">
+                    <p><strong>Problèmes identifiés :</strong></p>
+                    <ul>
+                        <li>Bugs de duplication d'objets dans le jeu</li>
+                        <li>Mise à jour majeure du système</li>
+                    </ul>
+                    
+                    <p><strong>Actions en cours :</strong></p>
+                    <ul>
+                        <li>🔧 Maintenance en cours</li>
+                    </ul>
+                </div>
+                
+                <div class="maintenance-actions">
+                    <button class="popup-btn" onclick="window.location.reload()">
+                        Actualiser
+                    </button>
+                    <button class="popup-btn secondary" onclick="closeMaintenancePopup()">
+                        Fermer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
