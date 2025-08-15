@@ -237,6 +237,19 @@ const noobsData = {
         baseValue: 12000000,
         category: 'noobs',
         get tradeValue() { return calculateTradeValue(this.baseValue, this.gainValue, this.rarityMultiplier, this.rarity); }
+    },
+    'noob-creators': {
+        name: 'Noob Creators',
+        image: 'static/images/noob-creators.png',
+        price: '108,000,000$',
+        gainPerSecond: '540,000$/s',
+        rarity: 'Secret',
+        description: 'Les créateurs originels du monde des Noobs, maîtres suprêmes de la création',
+        rarityMultiplier: 3.0,
+        gainValue: 540000,
+        baseValue: 108000000,
+        category: 'noobs',
+        get tradeValue() { return calculateTradeValue(this.baseValue, this.gainValue, this.rarityMultiplier, this.rarity); }
     }
 };
 
@@ -875,6 +888,15 @@ function initializeCalculator() {
             if (modalContent) {
                 modalContent.scrollTop = 0;
                 modalContent.focus();
+                
+                // Forcer le recalcul de la hauteur sur mobile
+                if (window.innerWidth <= 768) {
+                    setTimeout(() => {
+                        modalContent.style.height = 'auto';
+                        const maxHeight = window.innerHeight * 0.95;
+                        modalContent.style.maxHeight = `${maxHeight}px`;
+                    }, 100);
+                }
             }
         });
     }
@@ -944,15 +966,11 @@ function setupTradeSlots() {
     const addSlots = document.querySelectorAll(".add-slot");
     
     addSlots.forEach(slot => {
-        // Support click classique
-        slot.addEventListener("click", (e) => {
-            e.preventDefault();
-            const side = slot.dataset.side;
-            openNoobSelector(slot, side);
-        });
+        let touchHandled = false;
         
-        // Support tactile amélioré
+        // Support tactile pour mobile
         slot.addEventListener("touchstart", (e) => {
+            touchHandled = true;
             e.preventDefault();
             slot.style.transform = "scale(0.95)";
             slot.style.background = "rgba(74, 158, 255, 0.3)";
@@ -960,16 +978,31 @@ function setupTradeSlots() {
         
         slot.addEventListener("touchend", (e) => {
             e.preventDefault();
-            slot.style.transform = "scale(1)";
-            slot.style.background = "rgba(74, 158, 255, 0.05)";
-            
-            const side = slot.dataset.side;
-            openNoobSelector(slot, side);
+            if (touchHandled) {
+                slot.style.transform = "scale(1)";
+                slot.style.background = "rgba(74, 158, 255, 0.05)";
+                
+                const side = slot.dataset.side;
+                openNoobSelector(slot, side);
+                
+                // Empêcher le click qui suit
+                setTimeout(() => { touchHandled = false; }, 300);
+            }
         });
         
         slot.addEventListener("touchcancel", (e) => {
+            touchHandled = false;
             slot.style.transform = "scale(1)";
             slot.style.background = "rgba(74, 158, 255, 0.05)";
+        });
+        
+        // Support click pour desktop
+        slot.addEventListener("click", (e) => {
+            if (!touchHandled) {
+                e.preventDefault();
+                const side = slot.dataset.side;
+                openNoobSelector(slot, side);
+            }
         });
     });
 }
@@ -1112,6 +1145,9 @@ function addNoobToSide(side, noobId, noob) {
     
     // Ajouter aux données
     tradeSlots[side].push({ slotId, noobId, noob });
+    
+    // Reconfigurer les événements des slots d'ajout
+    setupTradeSlots();
 }
 
 function removeNoobFromSlot(button, side, slotId) {
@@ -1122,6 +1158,9 @@ function removeNoobFromSlot(button, side, slotId) {
     
     // Supprimer des données
     tradeSlots[side] = tradeSlots[side].filter(item => item.slotId !== slotId);
+    
+    // Reconfigurer les événements des slots d'ajout
+    setupTradeSlots();
     
     updateTradeCalculations();
 }
