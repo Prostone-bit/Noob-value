@@ -1455,16 +1455,18 @@ body::before {
 }
 
 
-/* Styles pour la modal calculateur */
+/* Styles pour la modal calculateur - Design inspiré de l'image */
 .calculator-modal-content {
-    max-width: 900px;
-    background: rgba(30, 35, 45, 0.95);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(74, 158, 255, 0.3);
-    padding: 2rem;
+    max-width: 1000px;
+    background: rgba(20, 25, 30, 0.98);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(60, 70, 80, 0.4);
+    padding: 2.5rem;
     position: relative;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
 }
 
 .calculator-modal-content::-webkit-scrollbar {
@@ -1472,65 +1474,183 @@ body::before {
 }
 
 .calculator-modal-content::-webkit-scrollbar-track {
-    background: rgba(74, 158, 255, 0.1);
+    background: rgba(60, 70, 80, 0.2);
     border-radius: 3px;
 }
 
 .calculator-modal-content::-webkit-scrollbar-thumb {
-    background: rgba(74, 158, 255, 0.5);
+    background: rgba(74, 158, 255, 0.4);
     border-radius: 3px;
 }
 
 .calculator-modal-content::-webkit-scrollbar-thumb:hover {
-    background: rgba(74, 158, 255, 0.7);
+    background: rgba(74, 158, 255, 0.6);
 }
 
 .calculator-container {
     display: flex;
-    gap: 2rem;
+    gap: 3rem;
     align-items: flex-start;
     margin: 2rem 0;
 }
 
 .trade-side {
     flex: 1;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 .trade-side h3 {
-    color: #4a9eff;
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    font-weight: 600;
+    color: #ffffff;
+    font-size: 1.8rem;
+    margin: 0;
+    font-weight: 400;
+    text-align: center;
+    letter-spacing: 0.5px;
 }
 
 .trade-slots {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    min-height: 120px;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+    min-height: 240px;
+    padding: 1rem;
+    background: rgba(40, 45, 55, 0.4);
+    border-radius: 16px;
+    border: 1px solid rgba(60, 70, 80, 0.3);
 }
 
 .trade-slot {
-    width: 100px;
-    height: 100px;
-    border: 2px dashed rgba(74, 158, 255, 0.3);
+    width: 100%;
+    height: 110px;
+    border: none;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    background: rgba(74, 158, 255, 0.05);
+    background: rgba(60, 70, 80, 0.6);
+    backdrop-filter: blur(10px);
+}
+
+.trade-slot.add-slot {
+    background: rgba(74, 158, 255, 0.4);
+    border: 2px solid rgba(74, 158, 255, 0.6);
 }
 
 .trade-slot:hover {
-    background: rgba(74, 158, 255, 0.2);
-    border-color: rgba(74, 158, 255, 0.6);
-    transform: scale(1.05);
+    background: rgba(74, 158, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(74, 158, 255, 0.2);
+}
+
+.trade-slot.add-slot:hover {
+    background: rgba(74, 158, 255, 0.6);
+    border-color: rgba(74, 158, 255, 0.8);
+}
+
+.trade-slot.filled {
+    background: rgba(50, 60, 70, 0.8);
+    border: 1px solid rgba(74, 158, 255, 0.3);
+}
+
+.trade-slot.filled:hover {
+    background: rgba(60, 70, 80, 0.9);
+    border-color: rgba(74, 158, 255, 0.5);
+}
+
+/* Barres de statistiques comme dans l'image */
+.trade-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: 1rem;
+}
+
+.trade-stat-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(40, 45, 55, 0.6);
+    border: 1px solid rgba(60, 70, 80, 0.4);
+    border-radius: 8px;
+    padding: 0.8rem 1.2rem;
+    backdrop-filter: blur(10px);
+}
+
+.trade-stat-label {
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.trade-stat-value {
+    color: #4a9eff;
+    font-size: 1rem;
+    font-weight: 600;
+    text-shadow: 0 2px 8px rgba(74, 158, 255, 0.3);
+}
+
+/* Style amélioré pour le diviseur VS */
+.vs-divider {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    margin: 2rem 0;
+    padding: 0;
+    letter-spacing: 1px;
+}
+
+/* Style pour l'icône plus dans les slots vides */
+.plus-icon {
+    font-size: 2rem;
+    color: #ffffff;
+    font-weight: 300;
+}
+
+.trade-slot.add-slot .plus-icon {
+    font-size: 2.5rem;
+    opacity: 0.8;
+}
+
+/* Style pour les images dans les slots remplis */
+.trade-slot img {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+/* Bouton de suppression */
+.remove-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 24px;
+    height: 24px;
+    background: rgba(229, 62, 62, 0.9);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.remove-btn:hover {
+    background: rgba(229, 62, 62, 1);
+    transform: scale(1.1);
 }
 
 .trade-slot.filled {
@@ -1618,11 +1738,14 @@ body::before {
 
 .trade-result {
     text-align: center;
-    margin-top: 2rem;
-    padding: 1.5rem;
-    background: rgba(74, 158, 255, 0.08);
+    margin: 1rem 0;
+    padding: 1.2rem;
+    background: rgba(40, 45, 55, 0.6);
     border-radius: 12px;
-    border: 1px solid rgba(74, 158, 255, 0.2);
+    border: 1px solid rgba(60, 70, 80, 0.4);
+    backdrop-filter: blur(10px);
+    min-width: 200px;
+    align-self: center;
 }
 
 .verdict {
@@ -1956,6 +2079,59 @@ body::before {
         margin-bottom: 1.2rem;
         padding: 0.5rem;
         background: rgba(74, 158, 255, 0.05);
+        border-radius: 12px;
+        border: 1px solid rgba(74, 158, 255, 0.1);
+    }
+
+    .trade-slot {
+        width: 100%;
+        height: 90px;
+        min-height: 90px;
+        border-radius: 12px;
+        border-width: 2px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .trade-slot img {
+        width: 50px;
+        height: 50px;
+    }
+
+    /* Style mobile pour le résultat d'échange au centre */
+    .trade-result {
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: rgba(40, 45, 55, 0.8);
+        border: 1px solid rgba(74, 158, 255, 0.3);
+        border-radius: 12px;
+        backdrop-filter: blur(15px);
+    }
+
+    .trade-result .verdict {
+        font-size: 1.1rem;
+        margin-bottom: 0.4rem;
+    }
+
+    .trade-result .difference {
+        font-size: 0.9rem;
+    }
+
+    /* Ajuster les barres de stats sur mobile */
+    .trade-stats {
+        gap: 0.6rem;
+        margin-top: 0.8rem;
+    }
+
+    .trade-stat-bar {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .trade-stat-label,
+    .trade-stat-value {
+        font-size: 0.9rem;
+    }
+}
         border-radius: 12px;
         border: 1px solid rgba(74, 158, 255, 0.1);
     }
